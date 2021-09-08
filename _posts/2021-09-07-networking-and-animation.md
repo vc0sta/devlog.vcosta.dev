@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Networking and Animations! 
-categories: GameDev, Networking, Animation
+categories: GameDev Networking Animation
 ---
 
 This is my first checkpoint and this week I've made some progress on networking implementation and on a basic animation setup.
