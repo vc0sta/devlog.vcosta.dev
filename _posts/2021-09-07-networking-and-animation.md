@@ -47,7 +47,7 @@ Well, this will be more difficult to explain ~~because I only copied it from the
 
 So.. lets begin with a simple diagram:
 
-![Networking Architecture](/images/2021-09-07/network-architecture.png)
+![Networking Architecture]({{site.baseurl}}/images/2021-09-07/network-architecture.png)
 
-The idea here is that I have a **server**, source of all truth.. and the **clients** that will be rendering the game to the players..
+The idea here is that I have a **server**, source of all truth.. and the **clients** that will be rendering the game to the players.:w
 
