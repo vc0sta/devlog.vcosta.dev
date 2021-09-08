@@ -24,6 +24,8 @@ With the model and animations already in godot, I've been using the super cool [
 
 For those who don't know what I'm talking about, basically I have 2 **Animation** nodes linked in a **Blend** node before going to the **Output** node.
 
+![Animation Tree]({{site.baseurl}}/post_images/2021-09-07/animation-tree.png)
+
 The **Output** node is the last node at the pipeline, and everything that comes into it, will be used to animate the model.
 
 The **Animation** node represents each animation I have on my **AnimationPlayer** (which was created automatically by **GGT**).
@@ -49,5 +51,24 @@ So.. lets begin with a simple diagram:
 
 ![Networking Architecture]({{site.baseurl}}/post_images/2021-09-07/network-architecture.png)
 
-The idea here is that I have a **server**, source of all truth.. and the **clients** that will be rendering the game to the players.:w
+The idea here is that I have a **server**, source of all truth.. and the **clients** that will be rendering the game to the players. Both the server and the client are written in Godot.
 
+Maybe that's not the best idea when talking about performance to have the server as a Godot intance as well, but it's good enough for learning purposes now. I guess the performance can be improoved later by identifying just the most intensive workloads and migrating some of them to a more performatic implementation.
+
+### Basic Communication
+
+I've only created a very primitive **Client x Server** communication here, basically what we have is a **client** sending the current **state** of the Player to the server, and the **server** broadcasting this information to all connected **clients**.
+
+The **player state** being sent over the internet is basically the current **position** of a player, it's **rotation** and the **blend_amount** value to sync the movement animations.
+
+To implement all of this, I've only used Godot's native [high-level](https://docs.godotengine.org/en/stable/tutorials/networking/high_level_multiplayer.html) networking.
+
+### Interpolation and Extrapolation
+
+There are 2 concepts that I've implemented following [this](https://www.youtube.com/watch?v=w2p0ugw3afs&list=PLZ-54sd-DMAKU8Neo5KsVmq8KtoDkfi4s&index=13) and [this](https://www.youtube.com/watch?v=XGyrKmOxLcc&list=PLZ-54sd-DMAKU8Neo5KsVmq8KtoDkfi4s&index=14) tutorials.
+
+The first one is **Interpolation**, that is basically smoothly transitioning from a value to another one. This is used not only in multiplayer games, but what I want to write here is specifically about using **interpolation** to smoothly change the position of a Player in a multiplayer game.
+
+I'll not enter at code level here, but the basic "algorythim" behind this concept is creating a **Buffer** to store some **Player states** and then smoothly transitioning from one **state** to the next.. This will cause an effect of continuity, and you will not see other players teleporting from a position to another because the **client** is filling the gaps between them.
+
+**Extrapolation** is quite the same idea, but it tries to mitigate network errors (everyone knows that networking are not reliable.. right?) by creating future **states** based on the one we already have. And as the time goes by, and we start receiving new **states** again, the **interpolation** between what was foreseen and the actual **state** of a given player, everything will be adjusted again..
