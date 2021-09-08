@@ -1,10 +1,15 @@
 ---
 layout: post
 title: Networking and Animations! 
-categories: GameDev
+categories: GameDev, Networking, Animation
 ---
 
 This is my first checkpoint and this week I've made some progress on networking implementation and on a basic animation setup.
+
+Here is the code if you want to open the project by yourself:
+
+[Client](https://github.com/vc0sta/BlightDoor/)
+[Server](https://github.com/vc0sta/BlightDoor-Server)
 
 ## Animations
 
@@ -56,7 +61,7 @@ The idea here is that I have a **server**, source of all truth.. and the **clien
 Maybe that's not the best idea when talking about performance to have the server as a Godot intance as well, but it's good enough for learning purposes now. I guess the performance can be improoved later by identifying just the most intensive workloads and migrating some of them to a more performatic implementation.
 
 ### Basic Communication
-
+https://github.com/vc0sta/BlightDoor/blob/7f1dfe3fc01a357831b6129eecb989a67a7c45ae/Map.gd#L45
 I've only created a very primitive **Client x Server** communication here, basically what we have is a **client** sending the current **state** of the Player to the server, and the **server** broadcasting this information to all connected **clients**.
 
 The **player state** being sent over the internet is basically the current **position** of a player, it's **rotation** and the **blend_amount** value to sync the movement animations.
@@ -72,3 +77,5 @@ The first one is **Interpolation**, that is basically smoothly transitioning fro
 I'll not enter at code level here, but the basic "algorythim" behind this concept is creating a **Buffer** to store some **Player states** and then smoothly transitioning from one **state** to the next.. This will cause an effect of continuity, and you will not see other players teleporting from a position to another because the **client** is filling the gaps between them.
 
 **Extrapolation** is quite the same idea, but it tries to mitigate network errors (everyone knows that networking are not reliable.. right?) by creating future **states** based on the one we already have. And as the time goes by and we start receiving new **states** again, the **interpolation** between what was foreseen and the actual **state** of a given player will make everything adjusted again..
+
+If you want to see the code, here is the code for [interpolation](https://github.com/vc0sta/BlightDoor/blob/7f1dfe3fc01a357831b6129eecb989a67a7c45ae/Map.gd#L29) and [extrapolation](https://github.com/vc0sta/BlightDoor/blob/7f1dfe3fc01a357831b6129eecb989a67a7c45ae/Map.gd#L45).
