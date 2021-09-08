@@ -8,8 +8,8 @@ This is my first checkpoint and this week I've made some progress on networking 
 
 Here is the code if you want to open the project by yourself:
 
-[Client](https://github.com/vc0sta/BlightDoor/)
-[Server](https://github.com/vc0sta/BlightDoor-Server)
+- [Client](https://github.com/vc0sta/BlightDoor/)
+- [Server](https://github.com/vc0sta/BlightDoor-Server)
 
 ## Animations
 
