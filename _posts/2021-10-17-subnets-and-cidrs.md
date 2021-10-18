@@ -4,36 +4,36 @@ title: Subnets and CIDRs
 categories: Networking
 ---
 
-Recently I faced several people struggling with subnet ip range conflicts, so I'll try to explain how CIDRs works and how to prevent conflicts on enterprise networks.
+Recently I faced several people struggling with subnet IP range conflicts, so I'll try to explain how CIDRs works and how to prevent conflicts on enterprise networks.
 
-Well, networks are part of our everyday life for a while now, but the way it works is almost 'magic' for most of people. You usually don't need to configure your router, it's just a plug-n-play device that you bought and suddenly you have a Wi-Fi network on your house.
+Well, networks are part of our everyday life for a while now, but the way it works is almost 'magic' for most people. You usually don't need to configure your router, it's just a plug-n-play device that you bought and suddenly you have a Wi-Fi network on your house.
 
-When talking about enterprise, this kind of magic does not work the same way, usually because we need to worry about how many ip addresses will be available to which network, how it will interact with another networks and which ip ranges are actually available for we to use in a global way. Here is when CIDRs come into play.
+When talking about enterprise, this kind of magic does not work the same way, usually, because we need to worry about how many IP addresses will be available to which network, how it will interact with other networks, and which IP ranges are available for we to use globally. Here is when CIDRs come into play.
 
 ## CIDRs
 
-IP addresses are composed of two parts, a network prefix intendifier and the hosts indentifier. With CIDRs you can express both values in the same notation.
+IP addresses are composed of two parts, a network prefix identifier, and the host's identifier. With CIDRs you can express both values in the same notation.
 
-CIDR notation specifies a IP address followed by a slash ('/') and a decimal number representing the number of bits in the network mask.
+CIDR notation specifies an IP address followed by a slash ('/') and a decimal number representing the number of bits in the network mask.
 
 Example: 192.168.0.0/16
 
-So, what does it mean when I say a network has this CIDR? and what those numbers means?
+So, what does it mean when I say a network has this CIDR? and what do those numbers mean?
 
 **192.168.0.0/16**
 
-As everything in computers, each decimal number here is a representation of a sequence of binary numbers. If you are not familiar with binary notation, here's a brief explanation:
+As with everything in computers, each decimal number here is a representation of a sequence of binary numbers. If you are not familiar with the binary notation, here's a brief explanation:
 
-Binary notation only uses 1 and 0, and depending on its position this values represents a 2ˆx value.
+Binary notation only uses 1 and 0, and depending on its position this value represents a 2ˆx value.
 
-Here we have a 8 length binary number (11000000) and on top of each digit there is the decimal value it is representing:
+Here we have an 8 length binary number (11000000) and on top of each digit there is the decimal value it is representing:
 
 ```
  128 64 32 16 8  4  2  1
  1   1  0  0  0  0  0  0
 ```
 
-Here is the easy part, for each number **1** on the binary representation, you just need to sum the decimal values on top of it to know it's value.
+Here is the easy part, for each number **1** on the binary representation, you just need to sum the decimal values on top of it to know its value.
 
 So **11000000** translates to **128 + 64 = 192**.
 
@@ -43,15 +43,15 @@ Now it's easy to understand the IP notation, and why its easier for us to just w
 192.168.0.0
 ```
 
-intead of:
+instead of:
 
 ```
 11000000.10101000.00000000.0000000
 ```
 
-Ok, the hard part is already gone, but what it means the `/16`?
+Ok, the hard part is already gone, but what it means by the `/16`?
 
-In CIDR notation, this decimal number means how much bits are part of network mask. Starting from the left, we know that the first 16 bits are the network prefix and the remainig 16 bit are available for all hosts.
+In CIDR notation, this decimal number means how many bits are part of the network mask. Starting from the left, we know that the first 16 bits are the network prefix and the remaining 16 bits are available for all hosts.
 
 Then we have:
 
@@ -67,17 +67,17 @@ Then we have:
 11000000.10101000.11111111.11111111
 ```
 
-We have some tools to make this calcs for us, like `ipcalc`. 
-Also, it's way easier to understand seeing it's output:
+We have some tools to make this calc for us, like `ipcalc`. 
+Also, it's way easier to understand seeing its output:
 
 
 ![ipcalc]({{site.baseurl}}/post_images/2021-10-17/ipcalc.png)
 
 ## Usable IPs
  
-Just a final note, in subnets not all IPs are usable, the first and the last Ip for each subnet are reserved for the gateway and  the broadcast respectively.
+Just a final note, in subnets not all IPs are usable, the first and the last Ip for each subnet are reserved for the gateway and the broadcast respectively.
 
-So for example, in a `/30` subnet, we have **4** availlable IPs, but just **2** of them are usable and can be assigned to our hosts. So if you need a subnet that needs to accept **3** hosts, you must define at least a `/29` CIDR.
+So for example, in a `/30` subnet, we have **4** available IPs, but just **2** of them are usable and can be assigned to our hosts. So if you need a subnet that needs to accept **3** hosts, you must define at least a `/29` CIDR.
 
 The exception to this rule is a `/32` CIDR that is just 1 usable IP, and as you might have observed, a `/31` CIDR has no usable IPs.
 
